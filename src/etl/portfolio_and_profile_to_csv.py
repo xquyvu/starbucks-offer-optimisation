@@ -1,8 +1,11 @@
 import pandas as pd
 
 
-# Portfolio and profile
+# Since portfolio and profile are quite nicely formatted, we can export them to csv
+# without further preprocessing
+
 def json_to_csv(from_path, to_path):
+    """Read data from json and export to csv as table"""
     pd.read_json(from_path, orient='records', lines=True).to_csv(to_path, index=False)
 
 ARGS = zip(
