@@ -1,4 +1,4 @@
-id,reward,difficulty,duration,email,mobile,social,web,discount,informational
+offer,reward,difficulty,duration,email,mobile,social,web,discount,informational
 ae264e3637204a6fb9bb56bc8210ddfd,10,10,168,1,1,1,0,0,0
 4d5c57ea9a6940dd891ad53e9dbe8da0,10,10,120,1,1,1,1,0,0
 3f207df678b143eea3cee63160fa8bed,0,0,96,1,1,0,1,0,1

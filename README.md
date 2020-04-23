@@ -59,25 +59,22 @@ This is the section that needs to be elaborated way more: please be specific abo
 
 This part aims to predict how customer would spend with and without the influence of offer, based on their profiles (age, gender, income, time, etc.)
 
-In this part, information on offer, customer profile and historical spending are combined into 1 data table with the following columns:
+In this part, information on offer, customer profile and historical spending are combined into 1 data table with the following information:
 
-| Source           | Column name           | Note                                                     |
-| ---------------- | --------------------- | -------------------------------------------------------- |
-| portfolio.json   | offer_type            | Label encoded                                            |
-| portfolio.json   | reward                |
-| portfolio.json   | channels              | Label encoded                                            |
-| profile.json     | age                   |
-| profile.json     | income                |
-| profile.json     | id                    | Might be included/removed depending on data availability |
-| transcript.json  | customer_id           | Might be included/removed depending on data availability |
-| Computed feature | days_since_membership |
-| Computed feature | total_spending        | total spending during the period when the offer is valid, which is also the target variable     |
+| Source          | Information | Note                                                                                  |
+| --------------- | ----------- | ------------------------------------------------------------------------------------- |
+| portfolio.json  | Offer type  | Label encoded or one-hot encoded                                                      |
+| portfolio.json  | channels    | Label encoded or one-hot encoded                                                      |
+| profile.json    | age         | Might need to be binned depending on model type                                       |
+| profile.json    | income      | Might need to be binned depending on model type                                       |
+| profile.json    | id          | Might be included/removed depending on data availability                              |
+| transcript.json | Spending    | Spending during the period when the offer is valid, which is also the target variable |
 
 Then, relevant features will be engineered, depending on the findings from the exploratory data analysis part.
 
 Data is then split into training and validation set, with 80% of customers in the training set and 20% in the validation set. This is to mimic the situation where we need to predict on new customers.
 
-A machine learning algorithm is then chosen to learn to predict customer `total_spending` given an offer.
+A machine learning algorithm is then chosen to learn to predict customer spending given an offer.
 
 ### 4.2. Create offer policy to maximise customer spending
 
@@ -124,17 +121,19 @@ In which:
 
 ## 7. Project design
 
-The initial proposed workflow is as follow:
+The workflow is as follow:
 
 - Data transformation: Transform data from json to table format to facilitate later analysis
-- Exploratory data analysis ("EDA"): Apply statistical/visualisation method to obtain further understanding of customer profiles and transactions. This section will seek to answer the following questions:
-  - How can we describe the offers?
-  - What is the distribution of customer characteristics and transactions? (e.g. most of the customers are from 20-30 year-old)
-  - How are customers reacting to the offers?
-  - What features can we engineer to predict customer spending?
-  - What data cleaning steps would be necessary?
-- Perform data cleaning as informed by the EDA step
-- Feature engineering, informed by the EDA step.
+  - `portfolio` and `profile` datasets: [Script](src/etl/portfolio_and_profile_to_csv.py)
+  - `transaction` dataset: [Notebook](src/etl/transaction_to_csv.ipynb)
+- Exploratory data analysis ("EDA"): Apply statistical/visualisation method to obtain further understanding of customer profiles and transactions
+  - `profile` dataset: [Notebook](src/eda/analyse_profiles.ipynb)
+  - `portfolio` dataset: [Notebook](src/eda/analyse_portfolio.ipynb)
+  - Customer spending: [Notebook](src/eda/analyse_spendings.ipynb)
+- Perform data ETL and data cleaning as informed by the EDA step:
+  - Parsing transcript data: [Notebook](src/etl/parse_transcript.ipynb)
+  - Numerically encoded portfolio data: [Notebook](src/etl/process_portfolio.ipynb)
+- Feature engineering, informed by the EDA step: [Notebook](src/features/feature_engineering.ipynb)
 - Setup benchmark model
 - Create machine learning model to predict customer spending. The choice of algorithm will be informed by the exploratory analysis phase. Tentative candidates are `LightGBM` and `LinearRegressor`.
 - Use the above trained model to simulate how customer would react to each type of offer

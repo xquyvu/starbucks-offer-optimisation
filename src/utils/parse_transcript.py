@@ -37,13 +37,13 @@ def parse_transcript(transcript, portfolio_validity):
             if customer_log.last_timestamp != current_timestamp:
                 customer_log.decay_offer_validity(current_timestamp)
 
-            if event_type == 'offer_received':
-                # Only track informational offers
-                if offer_id in informational_offers:
+            # Only track informational offers
+            if offer_id in informational_offers:
+                if event_type == 'offer received':
                     customer_log.receive_offer(offer_id)
 
-            elif event_type == 'offer_viewed':
-                customer_log.view_offer(offer_id)
+                elif event_type == 'offer viewed':
+                    customer_log.view_offer(offer_id)
 
             elif event_type == 'transaction':
                 customer_log.money_spent = amount

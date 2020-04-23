@@ -1,4 +1,4 @@
-age,gender,id,income
+age,gender,person,income
 55.0,F,0610b486422d4921ae7d2bf64640c50b,112000.0
 75.0,F,78afa995795e4d85b5d9ceeca43f5fef,100000.0
 68.0,M,e2127556f4f64592b11af22de27a7932,70000.0
