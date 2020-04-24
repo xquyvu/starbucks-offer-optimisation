@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import lightgbm as lgb
 from sklearn.model_selection import train_test_split
@@ -52,8 +51,8 @@ def prepare_data(data):
 
 def plot_importance(reg):
     for importance_type in ('gain', 'split'):
-        fig, ax = plt.subplots(figsize=(15,7))
-        lgb.plot_importance(reg, importance_type='gain', ax=ax)
+        _, ax = plt.subplots(figsize=(15,7))
+        lgb.plot_importance(reg, importance_type=importance_type, ax=ax)
         plt.tight_layout()
         plt.show()
 

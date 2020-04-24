@@ -2,22 +2,20 @@
 
 Optimise target customers for offers based on transaction, demographic and offer data
 
+## 0. Requirements
+
+- python 3.7
+- as specified in requirements.txt
+
 ## 1. Background
 
 Starbucks is a coffee company and coffeehouse chain that serves hot and cold drinks, various kinds of coffee and tea. Once every few days, Starbucks sends out an offer to users of their mobile app as a way to stimulate customer spending. Starbucks is looking to optimise their offering strategy so that the right offer is sent to the right customer.
 
 ## 2. Problem statement
 
-With millions of customers and various types of offers, it is impossible to allocate personel to manually decide the offering for each customer. Each person in the simulation has some hidden traits that influence their purchasing patterns and are associated with their observable traits. People produce various events, including receiving offers, opening offers, and making purchases. Therefore, it is necessary to build an automated decision process that allocate the right offer to the right customer.
+With millions of customers and various types of offers, it is impossible to allocate personel to manually decide the offering for each customer. Each person in the simulation has some hidden traits that influence their purchasing patterns and are associated with their observable traits. People produce various events, including receiving offers, opening offers, and making purchases.
 
-"The right offer" must satisfies the following criteria:
-
-- **Influence**: The offer needs to actually influence customer behavior. For example, if the buy 1 get 1 offer was sent to someone who would buy 2 drinks anyway, then that offer is not "the right offer". This also means the offer needs to stimulate customer spending, i.e increase their spending.
-- **Efficiency**: The offer needs to be used and completed by the user. If not, sending out the offer would be meaningless.
-
-Therefore, it is also important to assess what a certain demographic group will buy when not receiving any offers.
-
-The above will serve as the objectives for this project.
+Therefore, it is necessary to build an automated decision process that allocate the right offer to the right customer.
 
 ## 3. Dataset
 
@@ -53,8 +51,6 @@ The data is contained in three files:
 
 The proposed solution has 2 parts, outlined as follows:
 
-This is the section that needs to be elaborated way more: please be specific about the tools you would like to use to solve this problem: algorithms, models, deployment, etc.
-
 ### 4.1. Predict customer spending
 
 This part aims to predict how customer would spend with and without the influence of offer, based on their profiles (age, gender, income, time, etc.)
@@ -82,15 +78,7 @@ Since the above step generate a simulation of customer spending if given each of
 
 ## 5. Benchmark model
 
-### 5.1. For predicting spending
-
-- Linear regression: Predict spending from customer and offer data without feature engineering
-- Simple average model: Takes the average customer spending as the prediction for each group (with offer / without offer)
-
-### 5.2. For optimising offer sending
-
-- Random offer choice: Assign offers randomly to customer, or
-- Sending out no offer at all.
+Linear regression was selected for simplicity. This will be used to predict spending from customer and offer data with minimal feature engineering.
 
 ## 6. Evaluation metrics
 
@@ -100,24 +88,15 @@ For this task, RMSE was selected, which is a standard metric for regression task
 
 ### 6.2. For optimising offer sending
 
-Businesses may seek to optimise for maximum income (i.e. customer spending) or profit. Therefore, the 2 following metrics were selected:
+Businesses may seek to optimise for maximum income (i.e. customer spending) or profit. Therefore, the following metric was selected:
 
-- **Spending increased** by allocating an offer to customer (in USD).
+**Spending increased** by allocating an offer to customer (in USD).
 
 ```python
 spending_increased = spending_with_offer - spending_without_offer
 ```
 
-- **Income efficiency** which is the increased income in relative to the difficulty of the offer.
-
-```python
-income_efficiency = spending_increased/difficulty
-```
-
-In which:
-
-- `spending_with_offer`, `spending_without_offer` is the amount that a customer would spend if they receive or did not receive an offer. This is provided in the `transcript.json`.
-- `difficulty`: An attribute of the offer, provided in the `portfolio.json`.
+In which: `spending_with_offer`, `spending_without_offer` is the amount that a customer would spend if they receive or did not receive an offer. This is provided in the `transcript.json`.
 
 ## 7. Project design
 
@@ -134,9 +113,9 @@ The workflow is as follow:
   - Parsing transcript data: [Notebook](src/etl/parse_transcript.ipynb)
   - Numerically encoded portfolio data: [Notebook](src/etl/process_portfolio.ipynb)
 - Feature engineering, informed by the EDA step: [Notebook](src/features/feature_engineering.ipynb)
-- Setup benchmark model
-- Create machine learning model to predict customer spending. The choice of algorithm will be informed by the exploratory analysis phase. Tentative candidates are `LightGBM` and `LinearRegressor`.
-- Use the above trained model to simulate how customer would react to each type of offer
-- Create a decision rule to allocate offers to customers that maximise increased spending. Since the above step generate a simulation of customer spending if given each offer, the decision rule will choose the offer that maximise the increased spending.
-- Evaluate and compare results obtained from benchmark models and machine learning model according to the metrics defined in [Section 6](#6-evaluation-metrics).
-- Critical reflection and assessment of the solution's business impact
+- Setup benchmark model [Notebook](src/models/modelling.ipynb)
+- Create machine learning model to predict customer spending. The choice of algorithm will be informed by the exploratory analysis phase. Tentative candidates are `LightGBM` and `LinearRegressor`. [Notebook](src/models/modelling.ipynb)
+- Evaluate and compare results obtained from benchmark models and machine learning model according to the metrics defined in [Section 6](#6-evaluation-metrics). [Notebook](src/models/modelling.ipynb)
+- Use the above trained model to simulate how customer would react to each type of offer [Notebook](src/models/simulate_spending.ipynb)
+- Create a decision rule to allocate offers to customers that maximise increased spending. Since the above step generate a simulation of customer spending if given each offer, the decision rule will choose the offer that maximise the increased spending. [Notebook](src/models/simulate_spending.ipynb)
+- Critical reflection and assessment of the solution's business impact [Report](outputs/project%20report.pdf)
