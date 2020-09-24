@@ -2,6 +2,8 @@
 
 Optimise target customers for offers based on transaction, demographic and offer data
 
+Detailed report [HERE](outputs/project%20report.pdf)
+
 ## 0. Requirements
 
 - python 3.7
